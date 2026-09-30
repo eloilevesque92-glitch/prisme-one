@@ -1,0 +1,24 @@
+name: cd
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      raison:
+        description: "Pourquoi on déploie ce tour"
+        required: false
+        default: "cycle concluant"
+
+jobs:
+  publier:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Pas de cible prod encore
+        run: |
+          echo "CD v1 = trace + feu vert."
+          echo "Raison: ${{ github.event.inputs.raison || 'push main' }}"
+          echo "Commit: ${{ github.sha }}"
+          echo "Quand radio / pont / comms auront un vrai target, on branche ici."
