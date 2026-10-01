@@ -1,0 +1,30 @@
+name: ci
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main, "experiment/**"]
+  workflow_dispatch:
+
+jobs:
+  garde-fou:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fichiers de doctrine présents
+        run: |
+          test -f README.md
+          echo "README ok"
+
+      - name: Markdown lisible
+        run: |
+          find . -name '*.md' -not -path './.git/*' | while read f; do
+            echo "check $f"
+            test -s "$f"
+          done
+
+      - name: Rappel relais
+        run: |
+          echo "CI verte = le pas est posé. Merge seulement si outcome::conclusive."
